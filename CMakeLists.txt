@@ -41,8 +41,11 @@ idf_component_register( SRCS ${CSOURCES}
 
 # Differences in platform data type sizes generate print formating warnings.
 # Disable treatment of these warnings as errors.
-idf_build_set_property(COMPILE_OPTIONS "-Wno-format" APPEND)
+idf_build_set_property(COMPILE_OPTIONS "-Wno-error=format" APPEND)
 
+idf_build_set_property(COMPILE_OPTIONS "-Wno-error=maybe-uninitialized" APPEND)
+idf_build_set_property(COMPILE_OPTIONS "-Wno-error=uninitialized" APPEND)
+idf_build_set_property(COMPILE_OPTIONS "-Wno-error=narrowing" APPEND)
 # Set the crypto engine for libssh2
 idf_build_get_property(crypto_mbedtls CONFIG_LIBSSH2_CRYPTO_ENGINE_MBEDTLS)
 

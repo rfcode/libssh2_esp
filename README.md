@@ -51,20 +51,6 @@ The cryptography engine used by libssh2 may also be set under
 `Component config` > `libssh2`  > `Cryptography engine`, though the only one
 currently supported is `mbedTLS` which comes bundled into ESP-IDF by default.
 
-### Important:
-
-As the library was designed for use on a different platform, the
-string format specifier used in logging the `uint32_t` type is
-`%u` (unsigned integer) but, on ESP32, is expected to be `%lu`
-(long unsigned integer) and this generates compilation errors because
-ESP-IDF compiles with the `-Wformat=1` flag set by default, treating format
-warnings as errors.
-
-The workaround for this is implemented in [CMakeLists.txt](CMakeLists.txt#L44):
-disabling **all** format print warnings, and the compiler will ignore print
-format bugs **in user code**. It is therefore recommended to ensure your code
-contains no such bugs before including this component.
-
 ## License
 
 Released under [BSD-3-Clause](/LICENSE) by [@skuodi](https://github.com/skuodi).
