@@ -18,11 +18,10 @@ menu "libssh2 Example Configuration"
             at "/storage/hello.txt" using <stdio.h> API
 
     config EXAMPLE_SSH_HOSTNAME
-        string "SSH server IPv4 address"
-        default "16.16.163.126" #bandit.labs.overthewire.org
+        string "SSH server host name"
+        default "bandit.labs.overthewire.org"
         help
-            Host IP of the SSH server. No DNS name resolution is performed
-            in this example, so value must be set to a valid IP string.
+            IP address or fully-qualified domain name of the SSH server.
 
     config EXAMPLE_SSH_PORT
         int "SSH server port"

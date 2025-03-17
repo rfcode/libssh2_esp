@@ -313,11 +313,62 @@ static int waitsocket(libssh2_socket_t socket_fd, LIBSSH2_SESSION *session)
     return rc;
 }
 
+static int _resolve_domain_and_connect(const char* domain_name, uint16_t port)
+{
+    
+  int                       rc;
+  int                       sfd;
+  struct addrinfo           hints;
+  struct addrinfo           *result, *rp;
+  char                      port_str[10];
+
+
+  if (!domain_name || !strlen(domain_name))
+    return LIBSSH2_INVALID_SOCKET;
+
+  memset(&hints, 0, sizeof(hints));
+  hints.ai_family = AF_INET;
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_flags = AI_PASSIVE;
+  hints.ai_protocol = 0;
+  hints.ai_canonname = NULL;
+  hints.ai_addr = NULL;
+  hints.ai_next = NULL;
+  
+  snprintf(port_str, sizeof(port_str), "%" PRIu16, port);
+  
+  rc = getaddrinfo(hostname, port_str, &hints, &result);
+  if (rc != 0)
+  {
+    fprintf(stderr, "getaddrinfo error: %d\n", rc);
+    return LIBSSH2_INVALID_SOCKET;
+  }
+
+  for (rp = result; rp != NULL; rp = rp->ai_next)
+  {
+    sfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+    if (sfd == LIBSSH2_INVALID_SOCKET)
+      continue;
+
+    if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != LIBSSH2_INVALID_SOCKET)
+      break;
+
+    close(sfd);
+  }
+
+  freeaddrinfo(result);
+
+  if (!rp || sfd == LIBSSH2_INVALID_SOCKET)
+  {
+    ESP_LOGE(LOG_TAG, "Could not resolve host: %s", domain_name);
+    return LIBSSH2_INVALID_SOCKET;
+  }
+  return sfd;
+}
+
 int main(int argc, char *argv[])
 {
-    uint32_t hostaddr;
     libssh2_socket_t sock;
-    struct sockaddr_in sin;
     const char *fingerprint;
     int rc;
     LIBSSH2_SESSION *session = NULL;
@@ -367,24 +418,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    hostaddr = inet_addr(hostname);
+    sock = _resolve_domain_and_connect(hostname, port);
 
-    /* Ultra basic "connect to port 22 on localhost".  Your code is
-     * responsible for creating the socket establishing the connection
-     */
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-    if(sock == LIBSSH2_INVALID_SOCKET) {
-        fprintf(stderr, "failed to create socket.\n");
-        goto shutdown;
-    }
-
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(port);
-    sin.sin_addr.s_addr = hostaddr;
-    if(connect(sock, (struct sockaddr*)(&sin), sizeof(struct sockaddr_in))) {
-        fprintf(stderr, "failed to connect.\n");
-        goto shutdown;
-    }
+    if(sock == LIBSSH2_INVALID_SOCKET)
+        return 1;
 
     /* Create a session instance */
     session = libssh2_session_init();
