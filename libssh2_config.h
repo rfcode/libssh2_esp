@@ -60,9 +60,11 @@
 // [BACK-PORT] Undefine this
 //
 /* #undef HAVE_GETTIMEOFDAY */
+
 #define HAVE_STRTOLL
 /* #undef HAVE_STRTOI64 */
 #define HAVE_SNPRINTF
+
 //
 // [BACK-PORT] Undefine this
 //

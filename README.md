@@ -31,12 +31,6 @@ git submodule update --init --recursive
 
 The library can be configured via `idf.py menuconfig` under `Component config` > `libssh2`.
 
-## Examples
-
-- [ssh2_exec](examples/ssh2_exec) - run the `ls` command at [bandit.labs.overthewire.org](https://overthewire.org/wargames/bandit/bandit0.html).
-
-![ssh2_exec](examples/ssh2_exec/run.gif)
-
 ## Porting notes
 
 The configuration of this component in ESP-IDF menuconfig is located under

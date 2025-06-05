@@ -1,6 +1,6 @@
 version: "1.0.1"
 description: "A back-port of libssh2 as an ESP-IDF 3.1v component"
-url: "https://github.com/skuodi/libssh2_esp"
+url: "https://github.com/rfcode/libssh2_esp"
 license: "BSD-3-Clause"
 tags:
   - ssh
