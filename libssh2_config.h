@@ -55,11 +55,19 @@
 /* #undef HAVE_NETINET_IN_H */
 
 /* Functions */
-#define HAVE_GETTIMEOFDAY
+
+//
+// [BACK-PORT] Undefine this
+//
+/* #undef HAVE_GETTIMEOFDAY */
 #define HAVE_STRTOLL
 /* #undef HAVE_STRTOI64 */
 #define HAVE_SNPRINTF
-#define HAVE_EXPLICIT_BZERO
+//
+// [BACK-PORT] Undefine this
+//
+/* #undef HAVE_EXPLICIT_BZERO */
+
 /* #undef HAVE_EXPLICIT_MEMSET */
 /* #undef HAVE_MEMSET_S */
 

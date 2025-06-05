@@ -48,6 +48,10 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 
-#include "esp_netif.h"
+//
+// [BACK-PORT] Use tcpip_adapter.h instead of
+// esp_netif.h header file for ESP-IDF 3.1v
+//
+#include "tcpip_adapter.h"
 
 #endif
