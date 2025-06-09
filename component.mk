@@ -17,11 +17,4 @@ CFLAGS+=-Wno-error=narrowing
 CFLAGS+=-DLIBSSH2_MBEDTLS
 
 # Debug logging configuration
-ifdef CONFIG_LIBSSH2_DEBUG_ENABLE
 CFLAGS+=-DLIBSSH2DEBUG
-endif
-
-# Deprecated API control
-ifdef CONFIG_LIBSSH2_NO_DEPRECATED
-CFLAGS+=-DLIBSSH2_NO_DEPRECATED
-endif
